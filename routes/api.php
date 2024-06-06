@@ -5,10 +5,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\v1\LoginController;
 
 Route::group(['prefix' => 'v1'], function() {
-    Route::post('generate-token', [LoginController::class, 'index']);
+    Route::post('login', [LoginController::class, 'login']);
 });
 
-Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\v1', 'middleware' => 'auth:sanctum'], function() {
+// Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\v1', 'middleware' => 'auth:sanctum'], function() {
+Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\v1'], function() {
     Route::apiResource('transaction', TransactionController::class);
     Route::apiResource('transaction-type', TransactionTypeController::class);
 });

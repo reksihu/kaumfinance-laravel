@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    public function index(Request $request) {
+    public function login(Request $request) {
         $credentials = [
             'email' => $request->email,
             'password' => $request->password
@@ -26,12 +26,12 @@ class LoginController extends Controller
                 Carbon::today()->endOfDay()
             ])
             ->get();
-            
+
             if ($issuedTokens->count() > 10) {
                 return response()->json(['message' => 'Max Limit Today.']);
             }
 
-            $basicToken = $user -> createToken('basic-token', ['none'], expiresAt: now()->addMinutes(30));
+            $basicToken = $user -> createToken('basic-token', ['none'], expiresAt: now()->addMonths(3));
             return [
                 'basic' => $basicToken->plainTextToken
             ];
