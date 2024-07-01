@@ -28,15 +28,13 @@ class LoginController extends Controller
             ->get();
 
             if ($issuedTokens->count() > 10) {
-                return response()->json(['message' => 'Max Limit Today.']);
+                return response()->json(['message' => 'Max Limit Today.'], 429);
             }
 
             $basicToken = $user -> createToken('basic-token', ['none'], expiresAt: now()->addMonths(3));
-            return [
-                'basic' => $basicToken->plainTextToken
-            ];
+            return response()->json(['message' => $basicToken->plainTextToken], 200);
         } else {
-            return response()->json(['message' => 'Unauthenticated.']);
+            return response()->json(['message' => 'Unauthenticated.'], 401);
         }
     }
 }
