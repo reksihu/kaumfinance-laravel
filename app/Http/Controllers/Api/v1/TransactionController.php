@@ -10,6 +10,7 @@ use App\Http\Resources\v1\TransactionResource;
 use App\Http\Resources\v1\TransactionCollection;
 use App\Filters\v1\TransactionsFilter;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TransactionController extends Controller
 {
@@ -19,12 +20,20 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         // return Transaction::all();
+        $user = $request->user();
+        $userId = $request->user()->id;
         $filter = new TransactionsFilter();
         $queryItems = $filter->transform($request); // ['column', 'operator', 'value']
         if (count($queryItems) == 0) {
-            return new TransactionCollection(Transaction::paginate());
+            $transactions = Transaction::with('userWallet.user')->whereHas('userWallet.user', function ($query) use ($userId) {
+                $query->where('id', $userId);
+            })->paginate();
+            return new TransactionCollection($transactions);
         } else {
-            $transactions = Transaction::where($queryItems)->paginate();
+            // $transactions = Transaction::where($queryItems)->paginate();
+            $transactions = Transaction::with('userWallet.user')->whereHas('userWallet.user', function ($query) use ($userId) {
+                $query->where('id', $userId);
+            })->where($queryItems)->paginate();
             return new TransactionCollection($transactions->appends($request->query())); // appends is to add the current filtering
         }
     }

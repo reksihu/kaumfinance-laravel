@@ -8,8 +8,8 @@ Route::group(['prefix' => 'v1'], function() {
     Route::post('login', [LoginController::class, 'login']);
 });
 
-// Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\v1', 'middleware' => 'auth:sanctum'], function() {
-Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\v1'], function() {
+// Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\v1'], function() {
+Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\v1', 'middleware' => 'auth:sanctum'], function() {
     Route::apiResource('transaction', TransactionController::class);
     Route::apiResource('transaction-type', TransactionTypeController::class);
 });
