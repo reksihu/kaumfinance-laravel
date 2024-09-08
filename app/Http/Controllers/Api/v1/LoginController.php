@@ -31,7 +31,7 @@ class LoginController extends Controller
                 return response()->json(['message' => 'Max Limit Today.'], 429);
             }
 
-            $basicToken = $user -> createToken('basic-token', ['none'], expiresAt: now()->addMonths(3));
+            $basicToken = $user -> createToken('basic-token', ['create', 'update', 'delete'], expiresAt: now()->addMonths(3));
             return response()->json(['message' => $basicToken->plainTextToken], 200);
         } else {
             return response()->json(['message' => 'Unauthenticated.'], 401);

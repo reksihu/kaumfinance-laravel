@@ -10,13 +10,15 @@ class TransactionsFilter extends ApiFilter {
         'id' => ['eq'],
         'date' => ['eq'],
         'transactionTypeId' => ['eq'],
-        // 'transactionTypeName' => ['eq'], // Cannot filtering by name because different table, you better use the Id
+        // Cannot filtering by name because different table, you better use the Id
+        // 'transactionTypeName' => ['eq'],
         'userWalletId' => ['eq'],
         'value' => ['eq', 'gt', 'gte', 'lt', 'lte'],
         'category' => ['eq'],
         'subCategory' => ['eq']
     ];
-
+    
+    // Only to mapping text transactionTypeId to db format text which is transaction_type_id
     protected $columnMap = [
         'transactionTypeId' => 'transaction_type_id',
         'userWalletId' => 'user_wallet_id',

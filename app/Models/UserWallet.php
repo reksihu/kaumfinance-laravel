@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class UserWallet extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'user_id',
+        'name',
+    ];
 
     public function transaction() {
         return $this->hasMany(Transaction::class);

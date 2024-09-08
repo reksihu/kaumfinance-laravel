@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\v1;
 
+use App\Models\Transaction;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Log;
 
 class UpdateTransactionRequest extends FormRequest
 {
@@ -13,6 +15,13 @@ class UpdateTransactionRequest extends FormRequest
     {
         // return true;
         $user = $this->user();
+        // This how to make sure is the data user_id is same with token user_id
+        $transaction = $this->route('transaction');
+        $userWallet = $transaction->userWallet;
+        Log::info($userWallet);
+        if ($userWallet->user_id != $this->user()->id) {
+            return false;
+        }
         return $user != null && $user->tokenCan('update');
     }
 
@@ -28,7 +37,7 @@ class UpdateTransactionRequest extends FormRequest
             return [
                 'date' => ['required', 'date'],
                 'transaction_type_id' => ['required', 'exists:transaction_types,id'],
-                'user_wallet_id' => ['required', 'exists:user_wallets,id'],
+                // 'user_wallet_id' => ['required', 'exists:user_wallets,id'],
                 'value' => ['required', 'numeric'],
                 'category' => ['required', 'string'],
                 'sub_category' => ['required', 'string'],
@@ -37,7 +46,7 @@ class UpdateTransactionRequest extends FormRequest
             return [
                 'date' => ['sometimes', 'required', 'date'],
                 'transaction_type_id' => ['sometimes', 'required', 'exists:transaction_types,id'],
-                'user_wallet_id' => ['sometimes', 'required', 'exists:user_wallets,id'],
+                // 'user_wallet_id' => ['sometimes', 'required', 'exists:user_wallets,id'],
                 'value' => ['sometimes', 'required', 'numeric'],
                 'category' => ['sometimes', 'required', 'string'],
                 'sub_category' => ['sometimes', 'required', 'string'],
