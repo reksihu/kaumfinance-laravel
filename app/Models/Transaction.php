@@ -16,6 +16,7 @@ class Transaction extends Model
         'value',
         'category',
         'sub_category',
+        'created_at'
     ];
 
     /* public function user() {

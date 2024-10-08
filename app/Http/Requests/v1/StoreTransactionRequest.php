@@ -16,10 +16,12 @@ class StoreTransactionRequest extends FormRequest
 
     public function rules(): array
     {
+        $userId = $this->user()->id;
         return [
             'date' => ['required', 'date'],
             'transaction_type_id' => ['required', 'exists:transaction_types,id'],
-            'user_wallet_id' => ['required', 'exists:user_wallets,id'],
+            'user_wallet_id' => ['required', 'exists:user_wallets,id,user_id,' . $userId],
+            'user_wallet_id_destination' => ['nullable', 'exists:user_wallets,id,user_id,' . $userId], // This param for Transfer
             'value' => ['required', 'numeric'],
             'category' => ['required', 'string'],
             'sub_category' => ['required', 'string'],
@@ -31,6 +33,7 @@ class StoreTransactionRequest extends FormRequest
         $this->merge([
             'transaction_type_id' => $this->transactionTypeId,
             'user_wallet_id' => $this->userWalletId,
+            'user_wallet_id_destination' => $this->userWalletIdDestination,
             'sub_category' => $this->subCategory,
         ]);
     }
