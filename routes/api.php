@@ -11,6 +11,7 @@ Route::group(['prefix' => 'v1'], function() {
 
 // Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\v1'], function() {
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers\Api\v1', 'middleware' => 'auth:sanctum'], function() {
+    Route::apiResource('user', UserController::class);
     Route::apiResource('transaction', TransactionController::class);
     Route::prefix('transactions')->group(function () {
         Route::get('in-out', [TransactionController::class, 'getInOut']);

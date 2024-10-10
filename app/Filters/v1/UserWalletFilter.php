@@ -30,18 +30,15 @@ class UserWalletFilter extends ApiFilter {
         foreach ($this->safeParms as $parm => $operators) {
             $query = $request->query($parm);
             
-            // Check if it is not null
             if (!isset($query)) {
                 continue;
             }
 
-            // To convert special format param
             $column = $this->columnMap[$parm] ?? $parm;
             
-            // To handle the multiple operator
             foreach ($operators as $operator) {
                 if (isset($query[$operator])) {
-                    $eloQuery[] = [$column, $this->operatorMap[$operator], $query[$operator]]; // the result for filter query
+                    $eloQuery[] = [$column, $this->operatorMap[$operator], $query[$operator]];
                 }
             }
         }

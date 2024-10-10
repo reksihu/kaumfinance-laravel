@@ -39,15 +39,19 @@ class TransactionsFilter extends ApiFilter {
         foreach ($this->safeParms as $parm => $operators) {
             $query = $request->query($parm);
             
-            if (!isset($query)) { // check if it is not null
+            // check if it is not null
+            if (!isset($query)) {
                 continue;
             }
 
-            $column = $this->columnMap[$parm] ?? $parm; // to convert special format param
+            // to convert special format param
+            $column = $this->columnMap[$parm] ?? $parm;
             
-            foreach ($operators as $operator) { // to handle the multiple operator
+            // to handle the multiple operator
+            foreach ($operators as $operator) {
                 if (isset($query[$operator])) {
-                    $eloQuery[] = [$column, $this->operatorMap[$operator], $query[$operator]]; // the result for filter query
+                    // the result for filter query
+                    $eloQuery[] = [$column, $this->operatorMap[$operator], $query[$operator]];
                 }
             }
         }

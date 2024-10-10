@@ -13,13 +13,12 @@ class UpdateTransactionRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        // return true;
         $user = $this->user();
-        // This how to make sure is the data user_id is same with token user_id
+        // This how to make sure is the data user_id in the db is same with token user_id
         $transaction = $this->route('transaction');
         $userWallet = $transaction->userWallet;
         Log::info($userWallet);
-        if ($userWallet->user_id != $this->user()->id) {
+        if ($userWallet->user_id != $user->id) {
             return false;
         }
         return $user != null && $user->tokenCan('update');

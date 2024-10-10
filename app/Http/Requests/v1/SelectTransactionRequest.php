@@ -4,14 +4,20 @@ namespace App\Http\Requests\v1;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCategoryRequest extends FormRequest
+class SelectTransactionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        $user = $this->user();
+        $transaction = $this->route('transaction');
+        $userWallet = $transaction->userWallet;
+        if ($userWallet->user_id != $user->id) {
+            return false;
+        }
+        return $user != null && $user->tokenCan('delete');
     }
 
     /**

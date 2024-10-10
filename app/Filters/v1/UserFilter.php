@@ -5,15 +5,16 @@ namespace App\Filters\v1;
 use Illuminate\Http\Request;
 use App\Filters\ApiFilter;
 
-class CategoriesFilter extends ApiFilter {
+class UserFilter extends ApiFilter {
     protected $safeParms = [
         'id' => ['eq'],
-        'category' => ['eq'],
-        'transactionTypeId' => ['eq'],
+        'name' => ['eq'],
+        'email' => ['eq'],
+        'reportDatePeriod' => ['eq']
     ];
-    
+
     protected $columnMap = [
-        'transactionTypeId' => 'transaction_type_id',
+        'reportDatePeriod' => 'report_date_period'
     ];
 
     protected $operatorMap = [

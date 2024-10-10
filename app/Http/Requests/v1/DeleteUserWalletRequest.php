@@ -10,8 +10,8 @@ class DeleteUserWalletRequest extends FormRequest
     public function authorize(): bool
     {
         $user = $this->user();
-        Log::info($this->route('user_wallet')->user_id . ' ' . $this->user()->id);
-        if ($this->route('user_wallet')->user_id != $this->user()->id) {
+        Log::info($this->route('user_wallet')->user_id . ' ' . $user->id);
+        if ($this->route('user_wallet')->user_id != $user->id) {
             return false;
         }
         return $user != null && $user->tokenCan('delete');

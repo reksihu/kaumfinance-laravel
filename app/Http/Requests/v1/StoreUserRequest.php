@@ -1,11 +1,10 @@
-<?php 
+<?php
 
 namespace App\Http\Requests\v1;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Log;
 
-class UpdateUserWalletRequest extends FormRequest
+class StoreUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,10 +12,7 @@ class UpdateUserWalletRequest extends FormRequest
     public function authorize(): bool
     {
         $user = $this->user();
-        if ($this->route('user_wallet')->user_id != $user->id) {
-            return false;
-        }
-        return $user != null && $user->tokenCan('update');
+        return $user != null && $user->tokenCan('create');
     }
 
     /**
@@ -27,12 +23,18 @@ class UpdateUserWalletRequest extends FormRequest
     public function rules(): array
     {
         $userId = $this->user()->id;
-        $method = $this->method();
         return [
-            'name' => ['required', 'string', 'unique:user_wallets,name,' . $userId],
-            'messages' => [
-                'name.unique' => 'A user with this name already exists for your account.',
-            ],
+            'name' => ['required', 'string'],
+            'email' => ['required', 'string', 'email', 'unique:users,email'],
+            'report_date_period' => ['required', 'numeric'],
+            'password' => ['required', 'string', 'min:8']
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'report_date_period' => $this->reportDatePeriod
+        ]);
     }
 }
