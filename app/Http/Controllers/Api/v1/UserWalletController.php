@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Models\UserWallet;
+use App\Models\Transaction;
 use App\Http\Requests\v1\StoreUserWalletRequest;
 use App\Http\Requests\v1\UpdateUserWalletRequest;
 use App\Http\Requests\v1\DeleteUserWalletRequest;
@@ -81,6 +82,12 @@ class UserWalletController extends Controller
      */
     public function destroy(DeleteUserWalletRequest $request, UserWallet $userWallet)
     {
-        $userWallet->delete();
+        // Check is there transaction for selected user wallet id
+        $transaction = Transaction::where('user_wallet_id', $userWallet['id'])->first();
+        if ($transaction) {
+            return response()->json(['message' => 'Dompet tidak dapat dihapus karena ada transaksi pada dompet ini.'], 400);
+        } else {
+            $userWallet->delete();
+        }
     }
 }

@@ -7,6 +7,7 @@ use Laravel\Sanctum\PersonalAccessToken;
 use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -16,6 +17,7 @@ class LoginController extends Controller
             'password' => $request->password
         ];
         if (Auth::attempt($credentials)) {
+            Log::info('User ' . $request->password);
             $user = Auth::user();
             // return $user->id;
             // dd($user);

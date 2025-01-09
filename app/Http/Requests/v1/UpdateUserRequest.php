@@ -31,12 +31,14 @@ class UpdateUserRequest extends FormRequest
             return [
                 'name' => ['required', 'string'],
                 'email' => ['required', 'string'],
+                'password' => ['sometimes', 'required', 'string', 'min:8'],
                 'report_date_period' => ['required', 'numeric']
             ];
         } else {
             return [
                 'name' => ['sometimes', 'required', 'string'],
                 'email' => ['sometimes', 'required', 'string'],
+                'password' => ['sometimes', 'required', 'string', 'min:8'],
                 'report_date_period' => ['sometimes', 'required', 'numeric']
             ];
         }
@@ -44,8 +46,12 @@ class UpdateUserRequest extends FormRequest
 
     protected function prepareForValidation()
     {
-        $this->merge([
-            'report_date_period' => $this->reportDatePeriod
-        ]);
+        $dataToMerge = [];
+        if ($this->reportDatePeriod) {
+            $dataToMerge['report_date_period'] = $this->reportDatePeriod;
+        }
+        if ($dataToMerge) {
+            $this->merge($dataToMerge);
+        }
     }
 }

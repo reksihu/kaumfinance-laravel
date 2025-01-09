@@ -68,6 +68,10 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        if ($request['password']) {
+            $request['password'] = Hash::make($request['password']);
+        }
+        $user->update($request->all());
     }
 
     /**
